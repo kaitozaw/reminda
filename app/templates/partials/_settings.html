@@ -1,0 +1,29 @@
+<form id="settingsForm" class="modal-content" method="post">
+    <div class="modal-header">
+        <h3 class="modal-title">Settings</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body">
+        {{ form.hidden_tag() }}
+        <div class="mb-2">
+            {{ form.reminder_offset.label(class="form-label") }}
+            {{ form.reminder_offset(class="form-select") }}
+        </div>
+        <div class="mb-2">
+            {{ form.reminder_hour.label(class="form-label") }}
+            {{ form.reminder_hour(class="form-control") }}
+        </div>
+        <div class="mb-2">
+            {{ form.email_subject.label(class="form-label") }}
+            {{ form.email_subject(class="form-control") }}
+        </div>
+        <div class="mb-2">
+            {{ form.email_body.label(class="form-label") }}
+            {{ form.email_body(class="form-control", rows=4) }}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>

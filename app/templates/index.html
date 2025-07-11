@@ -1,0 +1,35 @@
+{% extends "layouts/base_private.html" %}
+
+{% block title %}Reminda - Delivery Log{% endblock %}
+
+{% block content %}
+    <h2 class="mb-3">Delivery Log</h2>
+    <table class="table table-bordered shadow-sm">
+        <thead class="table-primary">
+            <tr>
+                <th>Customer</th>
+                <th>Event</th>
+                <th>Sent At</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in reminder_logs %}
+            <tr>
+                <td>{{ log.customer.first_name }} {{ log.customer.last_name }}</td>
+                <td>{{ log.event.title }}</td>
+                <td>{{ log.sent_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                    {% if log.status.value == 'Sent' %}
+                        <span class="status-dot text-sent">●</span> Sent
+                    {% else %}
+                        <span class="status-dot text-failed">●</span> Failed
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-center">No logs found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
