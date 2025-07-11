@@ -19,24 +19,29 @@ Reminda provides an automated workflow that sends reminders to customers with sc
 
 ## Tech Stack
 
-### Frontend
+### Frontend (Google Calendar Add-on UI)
+- Apps Script
+- CardService
 
-- **Google Calendar Add-on**: Apps Script, CardService UI
-- **Web UI**: Jinja2, Bootstrap 5, Vanilla JS
+### Frontend (Web UI)
+- Jinja2**
+- Bootstrap 5
+- Vanilla JS
 
 ### Backend
-
-- Flask + SQLAlchemy
+- Flask
+- SQLAlchemy
 - Celery
 - Redis
 
 ### Database
+- PostgreSQL
 
-- MySQL
+### Authentication
+- Flask-Login
 
-### Auth & APIs
-
-- Google OAuth 2.0
+### Google Integration
+- OAuth 2.0 (Google)
 - Google Calendar API
 - Gmail API
 
@@ -63,11 +68,11 @@ pip install -r requirements.txt
 # Flask App Settings
 SECRET_KEY=your-secret-key
 
-# MySQL Database Settings
-MYSQL_USER=root
-MYSQL_PASSWORD=password123
-MYSQL_HOST=localhost
-MYSQL_DB=reminda
+# PostgreSQL Database Settings
+POSTGRES_USER=your-username
+POSTGRES_PASSWORD=your-password
+POSTGRES_HOST=localhost
+POSTGRES_DB=reminda
 
 # Google OAuth Settings (use your own credentials)
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
@@ -82,12 +87,8 @@ CELERY_RESULT_BACKEND=redis://localhost:6379/0
 ### 4. Create MySQL database and initialize schema
 
 ```bash
-# Login to MySQL
-mysql -u root -p
-
-# In MySQL prompt:
-CREATE DATABASE reminda;
-EXIT;
+# Create PostgreSQL database
+createdb reminda
 
 # Set Flask app if needed
 export FLASK_APP=run.py
