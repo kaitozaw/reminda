@@ -2,12 +2,14 @@ def dispatch_reminders():
     from app.models import User, ReminderLog
     from app.jobs.reminder import reminder_email
     from datetime import datetime, timedelta
+    import os
     import pytz
     
     AEST = pytz.timezone("Australia/Brisbane")
     now_local = datetime.now(AEST)
     current_hour = now_local.hour
     print(f"[Scheduler] {now_local.strftime('%Y-%m-%d %H:%M')} AEST - Dispatching reminders for hour={current_hour}")
+    print("DATABASE_URL from env:", os.environ.get("DATABASE_URL"))
 
     users = User.query.filter_by(reminder_hour=current_hour).all()
     for user in users:
