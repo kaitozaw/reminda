@@ -4,7 +4,6 @@ from app.utils.google_api import fetch_google_event_data
 from datetime import datetime
 from flask import Blueprint, request, jsonify
 from sqlalchemy import or_
-import logging
 
 bp = Blueprint("addon", __name__)
 

@@ -23,6 +23,7 @@ jobs:
 
       - name: Run reminder job
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+            DATABASE_URL: ${{ secrets.DATABASE_URL }}
+            PYTHONPATH: .
         run: |
-          python scripts/run_dispatcher.py
+            python scripts/run_dispatcher.py
