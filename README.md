@@ -78,10 +78,6 @@ POSTGRES_DB=reminda
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_REDIRECT_URI=http://127.0.0.1:5000/auth/google_callback
-
-# Celery / Redis Settings
-CELERY_BROKER_URL=redis://localhost:6379/0
-CELERY_RESULT_BACKEND=redis://localhost:6379/0
 ```
 
 ### 4. Create MySQL database and initialize schema

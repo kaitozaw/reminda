@@ -1,15 +1,11 @@
-from app.extensions import celery, db
-from app.models import User, ReminderLog, GoogleEvent
-from app.jobs.reminders import send_reminder_email
-from datetime import datetime, timedelta
-import pytz
-
-AEST = pytz.timezone("Australia/Brisbane")
-
-@celery.task
-def run_hourly_reminder_dispatch():
-    now_utc = datetime.utcnow()
-    now_local = now_utc.astimezone(AEST)
+def dispatch_reminders():
+    from app.models import User, ReminderLog
+    from app.jobs.reminder import reminder_email
+    from datetime import datetime, timedelta
+    import pytz
+    
+    AEST = pytz.timezone("Australia/Brisbane")
+    now_local = datetime.now(AEST)
     current_hour = now_local.hour
     print(f"[Scheduler] {now_local.strftime('%Y-%m-%d %H:%M')} AEST - Dispatching reminders for hour={current_hour}")
 
@@ -39,5 +35,5 @@ def run_hourly_reminder_dispatch():
                     print(f"[Skipped] Already sent to customer={customer.id} for event={event.id}")
                     continue
 
-                send_reminder_email.delay(user.id, customer.id, event.id)
+                reminder_email(user.id, customer.id, event.id)
                 print(f"[Enqueued] user={user.id}, customer={customer.id}, event={event.id}")

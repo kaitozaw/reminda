@@ -13,7 +13,7 @@ CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
 
-def send_email_via_gmail(user_id, to_email, subject, body):
+def reminder_email_via_gmail(user_id, to_email, subject, body):
     account = GoogleAccount.query.filter_by(user_id=user_id).first()
     if not account:
         return 400, "Google account not found"

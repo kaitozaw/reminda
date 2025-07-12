@@ -169,7 +169,8 @@ def is_assigned_to_customer():
 
     google_event = GoogleEvent.query.filter_by(user_id=user_id, google_event_id=google_event_id).first()
     if not google_event:
-        return jsonify({"assigned": False}), 404
+        return jsonify({"assigned": False}), 200
+    
 
     assignment_exists = EventAssignment.query.filter_by(event_id=google_event.id, customer_id=customer_id).first() is not None
     
