@@ -23,6 +23,7 @@ jobs:
 
       - name: Run reminder job
         env:
+            SECRET_KEY: ${{ secrets.SECRET_KEY }}
             DATABASE_URL: ${{ secrets.DATABASE_URL }}
             PYTHONPATH: .
         run: |
