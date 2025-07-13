@@ -93,7 +93,7 @@ export FLASK_APP=run.py
 flask db init
 
 # Generate migration scripts from models
-flask db migrate -m "Initial migration"
+flask db migrate -m "initial migration"
 
 # Apply migrations to create tables
 flask db upgrade
