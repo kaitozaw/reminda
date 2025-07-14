@@ -17,6 +17,10 @@ Reminda provides an automated workflow that sends reminders to customers with sc
 - 🧑‍💻 Web dashboard for viewing reminder delivery logs and managing reminder settings
 - 🛠️ Deployable to Render with GitHub Actions automation
 
+## Data Model
+
+![Data Model](./docs/data_model.png)
+
 ## Tech Stack
 
 ### Frontend (Google Calendar Add-on UI)
@@ -203,6 +207,7 @@ reminda/
 │   ├── utils/             # Helper functions
 │   ├── __init__.py        # App factory
 │   └── extensions.py      # Flask extensions
+├── docs/                  # Data model diagram
 ├── gas/                   # Contains Google Apps Script code and UI components for the Calendar Add-on
 ├── migrations/            # DB migration history
 ├── scripts/               # Utility scripts for automation and setup tasks
