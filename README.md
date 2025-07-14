@@ -139,7 +139,7 @@ Follow these steps to set up the Google Calendar sidebar add-on using Google App
 - Fill in the required fields:
   - Application type: `Web application`
   - Name (e.g., `reminda-dev`)
-  - Authorized redirect URI: http://127.0.0.1:5000/auth/google_callback
+  - Authorized redirect URI: `http://127.0.0.1:5000/auth/google_callback`
 - Copy `client_id` and `client_secret` into your `.env` file as:
   ```bash
   GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
@@ -162,7 +162,7 @@ Follow these steps to set up the Google Calendar sidebar add-on using Google App
 
 ### 7. Test the Add-on Using Cloudflare Tunnel
 
-You can expose your local Flask app to the internet temporarily using [Cloudflare Tunnel](https://developers.cloudflare.com), which is useful for testing the Add-on sidebar with a live backend.
+You can expose your local Flask app to the internet temporarily using [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/), which is useful for testing the Add-on sidebar with a live backend.
 
 ```bash
 # Install Cloudflare Tunnel CLI
@@ -203,7 +203,7 @@ reminda/
 │   ├── utils/             # Helper functions
 │   ├── __init__.py        # App factory
 │   └── extensions.py      # Flask extensions
-├── gas/                   # # Contains Google Apps Script code and UI components for the Calendar Add-on
+├── gas/                   # Contains Google Apps Script code and UI components for the Calendar Add-on
 ├── migrations/            # DB migration history
 ├── scripts/               # Utility scripts for automation and setup tasks
 ├── .env                   # Environment variables (not committed)
