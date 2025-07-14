@@ -1,5 +1,5 @@
 from app.extensions import db
-from app.forms import LoginForm
+from app.forms import LoginForm, SignupForm
 from app.models import User, GoogleAccount
 from app.utils.google_auth import get_google_auth_url, exchange_code_for_tokens
 from flask import Blueprint, render_template, redirect, request, url_for, flash
@@ -24,6 +24,24 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("auth.login"))
+
+@auth_bp.route("/signup", methods=["GET", "POST"])
+def signup():
+    form = SignupForm()
+    if form.validate_on_submit():
+        existing_user = User.query.filter_by(email=form.email.data).first()
+        if existing_user:
+            flash("Email already registered.")
+            return render_template("signup.html", form=form)
+
+        user = User(email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        return redirect(url_for("main.index"))
+
+    return render_template("signup.html", form=form)
 
 @auth_bp.route("/auth/google_login")
 def google_login():
