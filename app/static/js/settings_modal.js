@@ -10,7 +10,11 @@ document.addEventListener("DOMContentLoaded", function () {
             for (const key in data) {
                 const field = settingsForm.elements.namedItem(key);
                 if (field) {
-                    field.value = data[key];
+                    if (field.type === "checkbox") {
+                        field.checked = data[key] === true || data[key] === "true";
+                    } else {
+                        field.value = data[key];
+                    }
                 }
             }
             settingsModal.show();

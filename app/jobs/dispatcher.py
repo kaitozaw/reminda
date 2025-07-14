@@ -3,14 +3,19 @@ def dispatch_reminders():
     from app.jobs.reminder import reminder_email
     from datetime import datetime, timedelta
     import pytz
-    
-    AEST = pytz.timezone("Australia/Brisbane")
-    now_local = datetime.now(AEST)
-    current_hour = now_local.hour
-    print(f"[Scheduler] {now_local.strftime('%Y-%m-%d %H:%M')} AEST - Dispatching reminders for hour={current_hour}")
 
-    users = User.query.filter_by(reminder_hour=current_hour).all()
+    now_utc = datetime.utcnow().replace(tzinfo=pytz.utc)
+    users = User.query.filter_by(reminder_activate=True).all()
     for user in users:
+        try:
+            tz = pytz.timezone(user.reminder_timezone)
+        except Exception:
+            continue
+
+        now_local = now_utc.astimezone(tz)
+        if now_local.hour != user.reminder_hour:
+            continue
+
         if user.reminder_offset not in [0, 1]:
             continue
 
@@ -19,7 +24,7 @@ def dispatch_reminders():
             target_date += timedelta(days=1)
 
         for event in user.events:
-            event_date = event.start_time.astimezone(AEST).date()
+            event_date = event.start_time.astimezone(tz).date()
             if event_date != target_date:
                 continue
 

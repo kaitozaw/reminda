@@ -9,6 +9,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.Text, nullable=False)
+    reminder_activate = db.Column(db.Boolean, nullable=False, default=False)
+    reminder_timezone = db.Column(db.String(64))
     reminder_offset = db.Column(db.Integer, default=0)
     reminder_hour = db.Column(db.Integer, default=9)
     created_at = db.Column(db.DateTime, server_default=db.func.now())

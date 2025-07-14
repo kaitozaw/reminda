@@ -17,6 +17,14 @@
             {% endif %}
         </div>
         {{ form.hidden_tag() }}
+        <div class="mb-2 form-check form-switch">
+            {{ form.reminder_activate.label(class="form-label") }}
+            {{ form.reminder_activate(class="form-check-input") }}
+        </div>
+        <div class="mb-2">
+            {{ form.reminder_timezone.label(class="form-label") }}
+            {{ form.reminder_timezone(class="form-select") }}
+        </div>
         <div class="mb-2">
             {{ form.reminder_offset.label(class="form-label") }}
             {{ form.reminder_offset(class="form-select") }}

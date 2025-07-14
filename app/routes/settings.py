@@ -15,6 +15,8 @@ def settings():
     if request.method == "POST" and form.validate_on_submit():
         try:
             user = User.query.get(user_id)
+            user.reminder_activate = form.reminder_activate.data
+            user.reminder_timezone = form.reminder_timezone.data
             user.reminder_offset = int(form.reminder_offset.data)
             user.reminder_hour = int(form.reminder_hour.data)
 
@@ -41,10 +43,12 @@ def settings():
         template = EmailTemplate.query.filter_by(user_id=user_id).first()
 
         return jsonify({
-            "reminder_offset": str(user.reminder_offset) if user.reminder_offset is not None else "",
-            "reminder_hour": str(user.reminder_hour or ""),
-            "email_subject": template.template_subject if template else "",
-            "email_body": template.template_body if template else ""
+            "reminder_activate": user.reminder_activate,
+            "reminder_timezone": user.reminder_timezone,
+            "reminder_offset": str(user.reminder_offset),
+            "reminder_hour": str(user.reminder_hour),
+            "email_subject": template.template_subject,
+            "email_body": template.template_body
         }), 200
 
     return jsonify({"status": "error", "message": "Invalid request"}), 400
