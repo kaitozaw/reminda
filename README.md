@@ -201,7 +201,6 @@ reminda/
 │   ├── jobs/              # Scheduled/background tasks
 │   ├── models/            # SQLAlchemy models
 │   ├── routes/            # Flask routes
-│   ├── scripts/           # Utility scripts
 │   ├── static/            # CSS, JS
 │   ├── templates/         # HTML templates
 │   ├── utils/             # Helper functions
