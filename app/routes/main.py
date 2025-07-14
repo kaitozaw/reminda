@@ -1,5 +1,5 @@
 from app.forms import SettingsForm
-from app.models import ReminderLog
+from app.models import ReminderLog, GoogleAccount
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
@@ -17,4 +17,6 @@ def index():
         .all()
     )
 
-    return render_template("index.html", form=form, reminder_logs=reminder_logs)
+    google_account = GoogleAccount.query.filter_by(user_id=current_user.id).first()
+
+    return render_template("index.html", form=form, reminder_logs=reminder_logs, google_account=google_account)

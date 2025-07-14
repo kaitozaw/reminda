@@ -210,7 +210,7 @@ reminda/
 ├── docs/                  # Data model diagram
 ├── gas/                   # Contains Google Apps Script code and UI components for the Calendar Add-on
 ├── migrations/            # DB migration history
-├── scripts/               # Utility scripts for automation and setup tasks
+├── scripts/               # Runs the scheduled reminder dispatch process
 ├── .env                   # Environment variables (not committed)
 ├── .gitignore
 ├── config.py              # App configuration

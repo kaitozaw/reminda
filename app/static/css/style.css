@@ -70,6 +70,25 @@ h1.text-primary {
   color: #fff;
 }
 
+.btn-outline-primary {
+  background-color: transparent;
+  color: #1E88E5;
+  border: 1px solid #1E88E5;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background-color: #E3F2FD;
+  color: #1565C0;
+  border-color: #1565C0;
+}
+
+.btn-outline-primary:active {
+  background-color: #BBDEFB;
+  color: #0D47A1;
+  border-color: #0D47A1;
+}
+
 .btn-secondary {
   background-color: #B0BEC5;
   color: #fff;
