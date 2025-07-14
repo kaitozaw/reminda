@@ -106,7 +106,7 @@ flask db upgrade
 flask run
 ```
 
-## Google Calendar Add-on Integration (Apps Script)
+## Google Calendar Add-on Integration
 
 Follow these steps to set up the Google Calendar sidebar add-on using Google Apps Script.
 
