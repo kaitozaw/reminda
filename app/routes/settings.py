@@ -47,8 +47,8 @@ def settings():
             "reminder_timezone": user.reminder_timezone,
             "reminder_offset": str(user.reminder_offset),
             "reminder_hour": str(user.reminder_hour),
-            "email_subject": template.template_subject,
-            "email_body": template.template_body
+            "email_subject": template.template_subject if template else "",
+            "email_body": template.template_body if template else ""
         }), 200
 
     return jsonify({"status": "error", "message": "Invalid request"}), 400
