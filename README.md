@@ -11,11 +11,11 @@ Reminda provides an automated workflow that sends reminders to customers with sc
 ## Features
 
 - 🔔 Automatic email reminders (same-day or day-before)
-- 📅 Google Calendar Add-on with customer assignment
-- 🧑‍💻 Web dashboard for managing reminders and settings
-- 🔐 Google OAuth-based secure login
 - 💌 Gmail API for email delivery
-- 🛠️ Compatible with Render and GitHub Actions
+- 📅 Google Calendar Add-on with customer assignment
+- 🔐 Google OAuth 2.0 integration for accessing Gmail and Calendar APIs
+- 🧑‍💻 Web dashboard for viewing reminder delivery logs and managing reminder settings
+- 🛠️ Deployable to Render with GitHub Actions automation
 
 ## Tech Stack
 
@@ -24,15 +24,14 @@ Reminda provides an automated workflow that sends reminders to customers with sc
 - CardService
 
 ### Frontend (Web UI)
-- Jinja2**
+- Jinja2
 - Bootstrap 5
 - Vanilla JS
 
 ### Backend
 - Flask
 - SQLAlchemy
-- Celery
-- Redis
+- WTForm
 
 ### Database
 - PostgreSQL
@@ -41,16 +40,25 @@ Reminda provides an automated workflow that sends reminders to customers with sc
 - Flask-Login
 
 ### Google Integration
-- OAuth 2.0 (Google)
+- OAuth 2.0
 - Google Calendar API
 - Gmail API
 
+### Scheduled Tasks
+- GitHub Actions
+
+### DevOps / Hosting
+- GitHub
+- Render
+
 ## Getting Started
+
+Follow these steps to set up Reminda locally for development.
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/reminda.git
+git clone https://github.com/kaitoozawa/reminda.git
 cd reminda
 ```
 
@@ -66,21 +74,20 @@ pip install -r requirements.txt
 
 ```bash
 # Flask App Settings
+FLASK_APP=run.py
+FLASK_ENV=development
 SECRET_KEY=your-secret-key
 
-# PostgreSQL Database Settings
-POSTGRES_USER=your-username
-POSTGRES_PASSWORD=your-password
-POSTGRES_HOST=localhost
-POSTGRES_DB=reminda
+# PostgreSQL settings
+DATABASE_URL=postgresql://your-username:your-password@localhost/reminda
 
-# Google OAuth Settings (use your own credentials)
+# Google OAuth Settings
 GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 GOOGLE_REDIRECT_URI=http://127.0.0.1:5000/auth/google_callback
 ```
 
-### 4. Create MySQL database and initialize schema
+### 4. Create PostgreSQL database and initialize schema
 
 ```bash
 # Create PostgreSQL database
@@ -88,12 +95,6 @@ createdb reminda
 
 # Set Flask app if needed
 export FLASK_APP=run.py
-
-# Initialize migrations folder (only once)
-flask db init
-
-# Generate migration scripts from models
-flask db migrate -m "initial migration"
 
 # Apply migrations to create tables
 flask db upgrade
@@ -105,34 +106,108 @@ flask db upgrade
 flask run
 ```
 
-### 6. Start background scheduler
+## Google Calendar Add-on Integration (Apps Script)
+
+Follow these steps to set up the Google Calendar sidebar add-on using Google Apps Script.
+
+### 1. Create a Google Cloud Project
+
+- Go to [Google Cloud Console](https://console.cloud.google.com)
+- Create a new project (e.g., `reminda-dev`)
+
+### 2. Enable Gmail and Calendar APIs
+
+- Navigate to **API & Services > Library**
+- Enable the following APIs:
+  - Gmail API
+  - Google Calendar API
+
+### 3. Configure OAuth Consent Screen
+
+- Go to **APIs & Services > OAuth consent screen**
+- Fill in the required fields:
+  - App name (e.g., `reminda-dev`)
+  - User support email
+- Choose `External` as the user type
+- Set developer contact email
+- Under **Test users**, add your own Google account to test during development
+
+### 4. Create OAuth 2.0 Credentials
+
+- Go to **APIs & Services > Credentials**
+- Click **Create Credentials > OAuth client ID**
+- Fill in the required fields:
+  - Application type: `Web application`
+  - Name (e.g., `reminda-dev`)
+  - Authorized redirect URI: http://127.0.0.1:5000/auth/google_callback
+- Copy `client_id` and `client_secret` into your `.env` file as:
+  ```bash
+  GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+  GOOGLE_CLIENT_SECRET=your-client-secret
+  ```
+
+### 5. Create an Apps Script Project
+
+- Visit [Google Apps Script](https://script.google.com/)
+- Click **New Project**
+- Name the project (e.g., `reminda-dev`)
+- Go to **Project Settings**
+- Enable: **Show "appsscript.json" manifest file in editor**
+- Under **Google Cloud Platform (GCP) Project**, paste the **project number** from the Google Cloud project created in Step 1
+
+### 6. Add application.json and Code.gs
+- You can copy and paste the contents from the `gas/` directory in the cloned GitHub repository:
+  - `gas/appsscript.json` → paste into `appsscript.json`
+  - `gas/Code.gs` → paste into `Code.gs`
+
+### 7. Test the Add-on Using Cloudflare Tunnel
+
+You can expose your local Flask app to the internet temporarily using [Cloudflare Tunnel](https://developers.cloudflare.com), which is useful for testing the Add-on sidebar with a live backend.
 
 ```bash
-celery -A celeryconfig.celery worker --loglevel=info
+# Install Cloudflare Tunnel CLI
+brew install cloudflared
+
+# Start your Flask server locally
+# Make sure your .env and database are configured correctly
+flask run --host=127.0.0.1 --port=5000
+
+# In a new terminal, start the Cloudflare Tunnel
+cloudflared tunnel --url http://localhost:5000
+
+# After running, you'll see a public URL like:
+# https://your-tunnel-name.trycloudflare.com
+# Keep this terminal open while testing
 ```
+
+### 8. Insert the Tunnel URL in `Code.gs` and Deploy the Add-on
+
+- Open the Apps Script editor for your Add-on project
+- In `Code.gs`, update the first line with your Cloudflare Tunnel URL
+- Go to **Deploy > Test deployments**
+- Click **Install**
 
 ## Directory Structure
 
 ```bash
 reminda/
-├── .vscode/               # VS Code settings (optional)
+├── .github/               # GitHub Actions workflows
 ├── app/
 │   ├── forms/             # WTForms classes
 │   ├── jobs/              # Scheduled/background tasks
 │   ├── models/            # SQLAlchemy models
-│   ├── routes/            # Flask routes (blueprints)
+│   ├── routes/            # Flask routes
 │   ├── scripts/           # Utility scripts
-│   ├── static/            # CSS, JS, image assets
-│   ├── templates/         # HTML templates (Jinja2)
+│   ├── static/            # CSS, JS
+│   ├── templates/         # HTML templates
 │   ├── utils/             # Helper functions
 │   ├── __init__.py        # App factory
-│   └── extensions.py      # Flask extensions (DB, LoginManager, etc.)
-├── migrations/            # DB migration history (Flask-Migrate)
+│   └── extensions.py      # Flask extensions
+├── gas/                   # # Contains Google Apps Script code and UI components for the Calendar Add-on
+├── migrations/            # DB migration history
+├── scripts/               # Utility scripts for automation and setup tasks
 ├── .env                   # Environment variables (not committed)
-├── .flaskenv              # Flask CLI settings
 ├── .gitignore
-├── celery_workers.py      # Celery worker launcher
-├── celeryconfig.py        # Celery config
 ├── config.py              # App configuration
 ├── LICENSE
 ├── README.md
