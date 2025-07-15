@@ -14,11 +14,11 @@
             </tr>
         </thead>
         <tbody>
-            {% for log in reminder_logs %}
+            {% for log in reminder_logs_tz %}
             <tr>
-                <td>{{ log.customer.first_name }} {{ log.customer.last_name }}</td>
-                <td>{{ log.event.title }}</td>
-                <td>{{ log.sent_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ log.customer_name }}</td>
+                <td>{{ log.event_title }}</td>
+                <td>{{ log.sent_at_local }}</td>
                 <td>
                     {% if log.status.value == 'Sent' %}
                         <span class="status-dot text-sent">●</span> Sent
