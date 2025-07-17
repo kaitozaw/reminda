@@ -36,12 +36,10 @@ Reminda provides an automated workflow that sends reminders to customers with sc
 - Flask
 - SQLAlchemy
 - WTForm
+- Flask-Login
 
 ### Database
 - PostgreSQL
-
-### Authentication
-- Flask-Login
 
 ### Google Integration
 - OAuth 2.0
