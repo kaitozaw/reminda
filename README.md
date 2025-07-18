@@ -19,7 +19,7 @@ Reminda provides an automated workflow that sends reminders to customers with sc
 
 ## Data Model
 
-![Data Model](./docs/data_model.png)
+![Entity Relation Diagram](./docs/er_diagram.png)
 
 ## Tech Stack
 
